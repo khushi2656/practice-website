@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const connectDB = require('./db');
 const User = require('./User');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
@@ -18,6 +19,9 @@ module.exports = async (req, res) => {
   }
 
   try {
+    // Connect to MongoDB
+    await connectDB();
+
     const token = req.headers.authorization?.replace('Bearer ', '');
     if (!token) {
       return res.status(200).json({ success: false, message: 'Not authenticated' });

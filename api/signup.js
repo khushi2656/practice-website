@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const connectDB = require('./db');
 const User = require('./User');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
@@ -19,6 +20,9 @@ module.exports = async (req, res) => {
   }
 
   try {
+    // Connect to MongoDB
+    await connectDB();
+
     const { username, email, password } = req.body;
 
     // Validate input
