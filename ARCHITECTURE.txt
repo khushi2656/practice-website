@@ -1,0 +1,349 @@
+# 🏗️ Application Architecture
+
+## 🏠 Local Development Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                          LOCAL ENVIRONMENT                          │
+│                     (http://localhost/practice-website)             │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌────────────────┐
+│   💻 Browser   │
+│  (User Interface) │
+└────────┬───────┘
+         │
+         │ HTTP Requests (AJAX/jQuery)
+         │
+         ▼
+┌────────────────────────────────────────────────────────────────────┐
+│                        📂 Frontend Files                           │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐            │
+│  │  HTML Pages  │  │  CSS Styles  │  │  JavaScript  │            │
+│  │  - index     │  │  - styles    │  │  - signup    │            │
+│  │  - signup    │  │  - bootstrap │  │  - login     │            │
+│  │  - login     │  │              │  │  - profile   │            │
+│  │  - profile   │  │              │  │  + jQuery    │            │
+│  └──────────────┘  └──────────────┘  └──────────────┘            │
+└────────────────────────────────────────────────────────────────────┘
+                              │
+                              │ AJAX POST/GET
+                              │
+                              ▼
+┌────────────────────────────────────────────────────────────────────┐
+│                    🐘 PHP Backend (XAMPP)                          │
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐ │
+│  │  config.php (Auto-detects: LOCALHOST)                        │ │
+│  └──────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐            │
+│  │  signup.php  │  │  login.php   │  │ profile.php  │            │
+│  │  Register    │  │  Authenticate│  │ Get/Update   │            │
+│  │  User        │  │  User        │  │ Profile      │            │
+│  └──────────────┘  └──────────────┘  └──────────────┘            │
+│                                                                     │
+│  ┌──────────────┐                                                  │
+│  │  logout.php  │                                                  │
+│  │  Clear Session │                                                │
+│  └──────────────┘                                                  │
+└────────────────────────────────────────────────────────────────────┘
+         │                    │                          │
+         │                    │                          │
+         ▼                    ▼                          ▼
+┌──────────────────┐ ┌──────────────────┐  ┌──────────────────────┐
+│  🐬 MySQL        │ │  🍃 MongoDB      │  │  ⚡ Redis            │
+│  (Local XAMPP)   │ │  (Atlas Cloud)   │  │  (Local/Cloud)       │
+│                  │ │                  │  │                      │
+│  Database:       │ │  Database:       │  │  Storage:            │
+│  user_auth_db    │ │  user_profiles_db│  │  Sessions            │
+│                  │ │                  │  │                      │
+│  Table:          │ │  Collection:     │  │  Keys:               │
+│  - users         │ │  - profiles      │  │  session:token       │
+│                  │ │                  │  │                      │
+│  Stores:         │ │  Stores:         │  │  Stores:             │
+│  - username      │ │  - firstName     │  │  - sessionToken      │
+│  - email         │ │  - lastName      │  │  - userId            │
+│  - password      │ │  - age, dob      │  │  - expiry (1hr)      │
+│  - created_at    │ │  - contact       │  │                      │
+│                  │ │  - address, etc  │  │                      │
+└──────────────────┘ └──────────────────┘  └──────────────────────┘
+     localhost:3306    cloud.mongodb.com    localhost:6379/cloud
+
+═══════════════════════════════════════════════════════════════════════
+
+## 🌍 Production (Online) Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                          ONLINE ENVIRONMENT                         │
+│                  (https://your-app.up.railway.app)                  │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌────────────────┐
+│   💻 Browser   │
+│  (User Interface) │
+└────────┬───────┘
+         │
+         │ HTTPS Requests (AJAX/jQuery)
+         │
+         ▼
+┌────────────────────────────────────────────────────────────────────┐
+│                        🚂 Railway Hosting                          │
+│                    (Application Container)                         │
+│                                                                     │
+│  ┌───────────────────────────────────────────────────────────────┐│
+│  │                    📂 Frontend Files                          ││
+│  │  (Same as local: HTML, CSS, JavaScript)                       ││
+│  └───────────────────────────────────────────────────────────────┘│
+│                              │                                      │
+│                              │ PHP Processing                       │
+│                              ▼                                      │
+│  ┌───────────────────────────────────────────────────────────────┐│
+│  │          🐘 PHP Backend (Railway PHP Container)               ││
+│  │                                                                ││
+│  │  ┌─────────────────────────────────────────────────────────┐ ││
+│  │  │  config.php (Auto-detects: ONLINE)                      │ ││
+│  │  │  Reads environment variables from Railway               │ ││
+│  │  └─────────────────────────────────────────────────────────┘ ││
+│  │                                                                ││
+│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       ││
+│  │  │  signup.php  │  │  login.php   │  │ profile.php  │       ││
+│  │  │  Register    │  │  Authenticate│  │ Get/Update   │       ││
+│  │  │  User        │  │  User        │  │ Profile      │       ││
+│  │  └──────────────┘  └──────────────┘  └──────────────┘       ││
+│  │                                                                ││
+│  │  ┌──────────────┐                                             ││
+│  │  │  logout.php  │                                             ││
+│  │  │  Clear Session │                                           ││
+│  │  └──────────────┘                                             ││
+│  └───────────────────────────────────────────────────────────────┘│
+└────────────────────────────────────────────────────────────────────┘
+         │                    │                          │
+         │                    │                          │
+         ▼                    ▼                          ▼
+┌──────────────────┐ ┌──────────────────┐  ┌──────────────────────┐
+│  🐬 MySQL        │ │  🍃 MongoDB      │  │  ⚡ Redis            │
+│  (Railway)       │ │  (Atlas Cloud)   │  │  (Redis Cloud)       │
+│                  │ │                  │  │                      │
+│  Database:       │ │  Database:       │  │  Storage:            │
+│  railway         │ │  user_profiles_db│  │  Sessions            │
+│                  │ │                  │  │                      │
+│  Table:          │ │  Collection:     │  │  Keys:               │
+│  - users         │ │  - profiles      │  │  session:token       │
+│                  │ │                  │  │                      │
+│  Stores:         │ │  Stores:         │  │  Stores:             │
+│  - username      │ │  - firstName     │  │  - sessionToken      │
+│  - email         │ │  - lastName      │  │  - userId            │
+│  - password      │ │  - age, dob      │  │  - expiry (1hr)      │
+│  - created_at    │ │  - contact       │  │                      │
+│                  │ │  - address, etc  │  │                      │
+└──────────────────┘ └──────────────────┘  └──────────────────────┘
+railway.app:6543    cloud.mongodb.com      redis.cloud:12345
+
+═══════════════════════════════════════════════════════════════════════
+
+## 🔄 Data Flow
+
+### Registration Flow
+```
+User fills form → signup.js (AJAX) → signup.php → MySQL (insert user)
+                                                 → Response: success/error
+```
+
+### Login Flow
+```
+User enters credentials → login.js (AJAX) → login.php → MySQL (verify)
+                                                       → Redis (store session)
+                                                       → localStorage (store token)
+                                                       → Response: sessionToken
+```
+
+### Get Profile Flow
+```
+Page loads → profile.js → get_profile.php → Redis (validate session)
+                                           → MongoDB (fetch profile)
+                                           → Response: profile data
+```
+
+### Update Profile Flow
+```
+User updates form → profile.js (AJAX) → update_profile.php → Redis (validate)
+                                                            → MongoDB (upsert)
+                                                            → Response: success
+```
+
+### Logout Flow
+```
+User clicks logout → profile.js → logout.php → Redis (delete session)
+                                              → localStorage (clear token)
+                                              → Redirect to login
+```
+
+═══════════════════════════════════════════════════════════════════════
+
+## 🔐 Security Layers
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                         Security Features                         │
+└──────────────────────────────────────────────────────────────────┘
+
+1. Password Security
+   ┌─────────────────────────────────────────┐
+   │ User Password                           │
+   │         ↓                                │
+   │ password_hash() with bcrypt             │
+   │         ↓                                │
+   │ Hashed Password → Stored in MySQL       │
+   └─────────────────────────────────────────┘
+
+2. SQL Injection Prevention
+   ┌─────────────────────────────────────────┐
+   │ User Input                              │
+   │         ↓                                │
+   │ Prepared Statements (?)                 │
+   │         ↓                                │
+   │ Parameterized Query → MySQL             │
+   └─────────────────────────────────────────┘
+
+3. Session Management
+   ┌─────────────────────────────────────────┐
+   │ Login Success                           │
+   │         ↓                                │
+   │ Generate 64-char Token                  │
+   │         ↓                                │
+   │ Store in Redis (1hr TTL)                │
+   │         ↓                                │
+   │ Return to Client → localStorage         │
+   │         ↓                                │
+   │ Every API Call → Validate Token         │
+   └─────────────────────────────────────────┘
+
+4. CORS & Headers
+   ┌─────────────────────────────────────────┐
+   │ Every API Response Includes:            │
+   │ - Content-Type: application/json        │
+   │ - Access-Control-Allow-Origin: *        │
+   │ - Access-Control-Allow-Methods          │
+   │ - Access-Control-Allow-Headers          │
+   └─────────────────────────────────────────┘
+```
+
+═══════════════════════════════════════════════════════════════════════
+
+## ⚙️ Configuration Management
+
+### Environment Detection (Automatic)
+```php
+// In php/config.php
+
+$isLocal = in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']);
+
+if ($isLocal) {
+    // Use local MySQL
+    DB_HOST = 'localhost'
+} else {
+    // Use Railway MySQL
+    DB_HOST = getenv('DB_HOST')
+}
+
+// MongoDB & Redis use cloud for both (shared data)
+```
+
+### Environment Variables (Railway)
+```
+Railway Dashboard → Service → Variables Tab
+
+DB_HOST=containers-us-west-123.railway.app
+DB_PORT=6543
+DB_USER=root
+DB_PASS=xxxxx
+DB_NAME=railway
+
+MONGO_URI=mongodb+srv://...
+MONGO_DB=user_profiles_db
+
+REDIS_HOST=redis-xxxxx.cloud.redislabs.com
+REDIS_PORT=12345
+REDIS_PASSWORD=xxxxx
+```
+
+═══════════════════════════════════════════════════════════════════════
+
+## 📊 Database Schema
+
+### MySQL - user_auth_db (or railway)
+```sql
+users
+├── id (INT, PRIMARY KEY, AUTO_INCREMENT)
+├── username (VARCHAR(50), UNIQUE, NOT NULL)
+├── email (VARCHAR(100), UNIQUE, NOT NULL)
+├── password (VARCHAR(255), NOT NULL)  -- bcrypt hash
+└── created_at (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+```
+
+### MongoDB - user_profiles_db
+```javascript
+profiles collection {
+  _id: ObjectId,
+  userId: "1",  // References MySQL users.id
+  firstName: "John",
+  lastName: "Doe",
+  age: "25",
+  dob: "1999-01-01",
+  contact: "+1234567890",
+  address: "123 Main St",
+  city: "New York",
+  state: "NY",
+  country: "USA",
+  updatedAt: ISODate("2024-03-02T...")
+}
+```
+
+### Redis - Sessions
+```
+Key: session:<token>
+Value: <userId>
+TTL: 3600 seconds (1 hour)
+
+Example:
+session:a1b2c3d4...  →  "1"  (expires in 3600s)
+```
+
+═══════════════════════════════════════════════════════════════════════
+
+## 🎯 Key Components
+
+| Component | Local | Online | Purpose |
+|-----------|-------|--------|---------|
+| **Frontend** | XAMPP htdocs | Railway | HTML/CSS/JS pages |
+| **Backend** | XAMPP PHP | Railway PHP | API endpoints |
+| **Auth DB** | XAMPP MySQL | Railway MySQL | User credentials |
+| **Profile DB** | MongoDB Atlas | MongoDB Atlas | User profiles |
+| **Session Store** | Local/Cloud Redis | Redis Cloud | Session tokens |
+| **Web Server** | Apache (XAMPP) | Railway Built-in | HTTP server |
+
+═══════════════════════════════════════════════════════════════════════
+
+## 🚀 Deployment Flow
+
+```
+┌────────────┐      ┌────────────┐      ┌────────────┐
+│   Local    │      │   GitHub   │      │  Railway   │
+│   Code     │─────▶│ Repository │─────▶│  Hosting   │
+│   Edit     │ git  │   (main)   │ auto │   Deploy   │
+└────────────┘ push └────────────┘ build└────────────┘
+                          │                     │
+                          │                     │
+                          ▼                     ▼
+                    ┌────────────┐      ┌────────────┐
+                    │  MongoDB   │      │   Redis    │
+                    │   Atlas    │◀─────│   Cloud    │
+                    │ (Profiles) │      │ (Sessions) │
+                    └────────────┘      └────────────┘
+```
+
+**Auto-Deployment**: Every push to GitHub → Railway rebuilds → Live in 2-3 minutes!
+
+═══════════════════════════════════════════════════════════════════════

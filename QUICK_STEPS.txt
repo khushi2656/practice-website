@@ -1,0 +1,169 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║                  QUICK START - DO THESE IN ORDER                     ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 1: INSTALL XAMPP                                               │
+├─────────────────────────────────────────────────────────────────────┤
+│ Download: https://www.apachefriends.org/download.html              │
+│ Install → Start Apache & MySQL (both should be GREEN)              │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 2: CREATE DATABASE                                            │
+├─────────────────────────────────────────────────────────────────────┤
+│ 1. Open: http://localhost/phpmyadmin                               │
+│ 2. Click "SQL" tab                                                 │
+│ 3. Copy contents from: database_setup.sql                          │
+│ 4. Paste and click "Go"                                            │
+│ 5. Verify: See "user_auth_db" in left sidebar                      │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 3: COPY PROJECT FILES                                         │
+├─────────────────────────────────────────────────────────────────────┤
+│ FROM: C:\Users\hp\OneDrive\Desktop\practice website                │
+│ TO:   C:\xampp\htdocs\practice-website                             │
+│                                                                     │
+│ PowerShell command:                                                 │
+│ Copy-Item -Recurse "C:\Users\hp\OneDrive\Desktop\practice website" │
+│            "C:\xampp\htdocs\practice-website"                       │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 4: TEST BASIC SETUP                                           │
+├─────────────────────────────────────────────────────────────────────┤
+│ Open: http://localhost/practice-website/                           │
+│ Try registering a user (MySQL will work, others may show errors)   │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 5: INSTALL MONGODB (Choose ONE)                               │
+├─────────────────────────────────────────────────────────────────────┤
+│ OPTION A - Local:                                                   │
+│   https://www.mongodb.com/try/download/community                   │
+│   Install → Check "Install as Service"                             │
+│                                                                     │
+│ OPTION B - Cloud (Easier!):                                         │
+│   https://www.mongodb.com/cloud/atlas/register                     │
+│   Create FREE M0 cluster → Get connection string                   │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 6: INSTALL REDIS (Choose ONE)                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│ OPTION A - Local:                                                   │
+│   https://github.com/microsoftarchive/redis/releases               │
+│   Install → Run: redis-server                                      │
+│                                                                     │
+│ OPTION B - Cloud:                                                   │
+│   https://redis.com/try-free/                                      │
+│   Create free account → Get connection details                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 7: INSTALL PHP EXTENSIONS                                     │
+├─────────────────────────────────────────────────────────────────────┤
+│ 1. Download php_mongodb.dll: https://pecl.php.net/package/mongodb  │
+│ 2. Download php_redis.dll: https://pecl.php.net/package/redis      │
+│ 3. Copy both .dll files to: C:\xampp\php\ext\                      │
+│ 4. Edit C:\xampp\php\php.ini, add:                                 │
+│    extension=mongodb                                                │
+│    extension=redis                                                  │
+│ 5. Restart Apache in XAMPP                                         │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 8: TEST ALL CONNECTIONS                                       │
+├─────────────────────────────────────────────────────────────────────┤
+│ Open: http://localhost/practice-website/api_test.html              │
+│ All 3 should show GREEN (✓ Connected):                             │
+│   ✓ MySQL                                                           │
+│   ✓ MongoDB                                                         │
+│   ✓ Redis                                                           │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│ STEP 9: TEST THE APPLICATION                                       │
+├─────────────────────────────────────────────────────────────────────┤
+│ http://localhost/practice-website/                                 │
+│ 1. Register → Create account                                       │
+│ 2. Login → Enter credentials                                       │
+│ 3. Profile → Update details                                        │
+│ 4. Logout → End session                                            │
+└─────────────────────────────────────────────────────────────────────┘
+
+╔══════════════════════════════════════════════════════════════════════╗
+║                         VERIFY CHECKLIST                             ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+[ ] XAMPP installed and Apache/MySQL both GREEN
+[ ] Database user_auth_db exists in phpMyAdmin
+[ ] Files copied to C:\xampp\htdocs\practice-website\
+[ ] Can access http://localhost/practice-website/
+[ ] MongoDB installed or Atlas cluster created
+[ ] Redis running (local) or cloud setup complete
+[ ] PHP extensions (mongodb, redis) installed
+[ ] api_test.html shows all 3 databases GREEN
+[ ] Can register, login, update profile, logout
+
+╔══════════════════════════════════════════════════════════════════════╗
+║                      COMMON ISSUES                                   ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+❌ Can't access localhost
+   → Check XAMPP: Apache must be green/running
+   → Try http://127.0.0.1 instead
+
+❌ MySQL connection failed
+   → Check XAMPP: MySQL must be green/running
+   → Run database_setup.sql in phpMyAdmin
+
+❌ MongoDB extension not loaded
+   → Check: C:\xampp\php\ext\php_mongodb.dll exists
+   → Check: C:\xampp\php\php.ini has "extension=mongodb"
+   → Restart Apache
+
+❌ Redis connection failed
+   → Run: redis-server (keep window open)
+   → Or use Redis cloud service
+
+❌ Shows PHP code in browser
+   → Files must be in C:\xampp\htdocs\, not Desktop
+   → Access via http://localhost/, not file://
+
+╔══════════════════════════════════════════════════════════════════════╗
+║                    HELPFUL COMMANDS                                  ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+Check PHP version:
+  C:\xampp\php\php.exe -v
+
+Check PHP extensions loaded:
+  C:\xampp\php\php.exe -m
+
+Test MySQL connection:
+  C:\xampp\mysql\bin\mysql.exe -u root -p
+
+Test MongoDB:
+  mongo --version  (or mongosh --version)
+
+Test Redis:
+  redis-cli ping  (should return PONG)
+
+Start Redis manually:
+  redis-server
+
+╔══════════════════════════════════════════════════════════════════════╗
+║                    IMPORTANT URLS                                    ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+Your Application:    http://localhost/practice-website/
+API Test:            http://localhost/practice-website/api_test.html
+Connection Test:     http://localhost/practice-website/test_connections.html
+phpMyAdmin:          http://localhost/phpmyadmin
+XAMPP Dashboard:     http://localhost/
+
+╔══════════════════════════════════════════════════════════════════════╗
+║              READ FULL GUIDE: START_HERE.md                          ║
+╚══════════════════════════════════════════════════════════════════════╝

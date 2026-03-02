@@ -9,6 +9,12 @@ composer.lock
 # Environment variables
 .env
 .env.local
+.env.production
+*.env
+
+# Configuration files with credentials
+php/config.local.php
+php/config.cloud.php
 
 # IDE
 .vscode/

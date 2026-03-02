@@ -166,6 +166,73 @@ Before running this application, ensure you have the following installed:
    http://localhost/practice-website/
    ```
 
+## Cloud Deployment (Run Online)
+
+This application can run both **locally** and **online** using cloud services.
+
+### Quick Cloud Setup
+
+For detailed step-by-step instructions, see:
+- **📖 [CLOUD_DEPLOYMENT_GUIDE.md](CLOUD_DEPLOYMENT_GUIDE.md)** - Complete deployment guide
+- **📋 [CLOUD_QUICK_START.txt](CLOUD_QUICK_START.txt)** - Quick reference card
+
+### Cloud Services Used
+
+1. **MongoDB Atlas** (FREE) - Cloud MongoDB database
+   - 512MB storage
+   - Used for profile data storage
+   - Sign up: https://www.mongodb.com/cloud/atlas/register
+
+2. **Redis Cloud** (FREE) - Cloud Redis cache
+   - 30MB storage
+   - Used for session management
+   - Sign up: https://redis.com/try-free/
+
+3. **Railway** (FREE $5 credit) - Application hosting
+   - Hosts your PHP application and MySQL database
+   - Auto-deployment from GitHub
+   - Sign up: https://railway.app/
+
+### Environment Auto-Detection
+
+The application automatically detects whether it's running locally or online:
+- **Localhost**: Uses XAMPP MySQL + Cloud MongoDB + Cloud/Local Redis
+- **Online (Railway)**: Uses Railway MySQL + Cloud MongoDB + Cloud Redis
+
+You don't need to manually switch configurations! The `php/config.php` file handles this automatically.
+
+### Quick Deploy Steps
+
+1. **Setup MongoDB Atlas** (5-10 min)
+   - Create free cluster
+   - Get connection string
+   
+2. **Setup Redis Cloud** (3-5 min)
+   - Create free database
+   - Get connection details
+   
+3. **Update config.php** (2 min)
+   - Add MongoDB Atlas connection string
+   - Add Redis Cloud credentials
+   
+4. **Deploy to Railway** (15-20 min)
+   - Connect GitHub repository
+   - Add MySQL database
+   - Set environment variables
+   - Get your live URL!
+
+**Total Time**: ~30-45 minutes to deploy online! 🚀
+
+### Test Tools
+
+- **Environment Checker**: See which environment you're running in
+  - Local: `http://localhost/practice-website/environment_checker.html`
+  - Online: `https://your-app.up.railway.app/environment_checker.html`
+
+- **Interactive API Test**: Test all APIs step-by-step
+  - Local: `http://localhost/practice-website/interactive_api_test.html`
+  - Online: `https://your-app.up.railway.app/interactive_api_test.html`
+
 ## Usage
 
 ### Registration Flow
