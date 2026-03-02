@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Connection Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 50px 0;
+        }
+        .test-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .status-success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .status-error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .loading {
+            color: #ffc107;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="text-center text-white mb-4">Database Connection Test</h1>
+                
+                <div class="test-card">
+                    <h3>MySQL Connection</h3>
+                    <p class="loading" id="mysql-status">Testing...</p>
+                    <pre id="mysql-result" class="mt-2"></pre>
+                </div>
+
+                <div class="test-card">
+                    <h3>MongoDB Connection</h3>
+                    <p class="loading" id="mongo-status">Testing...</p>
+                    <pre id="mongo-result" class="mt-2"></pre>
+                </div>
+
+                <div class="test-card">
+                    <h3>Redis Connection</h3>
+                    <p class="loading" id="redis-status">Testing...</p>
+                    <pre id="redis-result" class="mt-2"></pre>
+                </div>
+
+                <div class="test-card">
+                    <h3>PHP Extensions</h3>
+                    <p class="loading" id="ext-status">Testing...</p>
+                    <pre id="ext-result" class="mt-2"></pre>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="index.html" class="btn btn-primary btn-lg">Go to Application</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Test all connections
+            testConnection('mysql');
+            testConnection('mongodb');
+            testConnection('redis');
+            testConnection('extensions');
+        });
+
+        function testConnection(type) {
+            $.ajax({
+                url: 'php/test_connections.php',
+                type: 'POST',
+                dataType: 'json',
+                data: { test: type },
+                success: function(response) {
+                    if (response.success) {
+                        $('#' + type + '-status').removeClass('loading').addClass('status-success').text('✓ Connected');
+                        $('#' + type + '-result').text(response.message);
+                    } else {
+                        $('#' + type + '-status').removeClass('loading').addClass('status-error').text('✗ Failed');
+                        $('#' + type + '-result').text(response.message);
+                    }
+                },
+                error: function() {
+                    $('#' + type + '-status').removeClass('loading').addClass('status-error').text('✗ Error');
+                    $('#' + type + '-result').text('Could not connect to test script');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

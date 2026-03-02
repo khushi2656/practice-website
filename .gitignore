@@ -1,0 +1,50 @@
+# PHP
+vendor/
+composer.lock
+
+# Database
+*.db
+*.sqlite
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*~
+
+# Node modules (if you add npm later)
+node_modules/
+
+# Compiled files
+*.min.js
+*.min.css
+
+# Sensitive configuration (for production, uncomment the line below)
+# php/config.php
+
+# Backup files
+*.backup
+backup/
+
+# Note: config.php is included for demonstration purposes
+# In production, use environment variables or config.example.php
