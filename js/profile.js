@@ -39,10 +39,14 @@ $(document).ready(function() {
         
         // Send AJAX request
         $.ajax({
-            url: 'php/update_profile.php',
+            url: '/api/update_profile',
             type: 'POST',
             dataType: 'json',
-            data: profileData,
+            contentType: 'application/json',
+            headers: {
+                'Authorization': 'Bearer ' + sessionToken
+            },
+            data: JSON.stringify(profileData),
             success: function(response) {
                 if (response.success) {
                     showMessage(response.message, 'success');
@@ -66,13 +70,14 @@ $(document).ready(function() {
     // Handle logout
     $('#logoutBtn').on('click', function() {
         $.ajax({
-            url: 'php/logout.php',
+            url: '/api/logout',
             type: 'POST',
             dataType: 'json',
-            data: {
-                sessionToken: sessionToken,
-                userId: userId
+            contentType: 'application/json',
+            headers: {
+                'Authorization': 'Bearer ' + sessionToken
             },
+            data: JSON.stringify({}),
             success: function(response) {
                 localStorage.clear();
                 window.location.href = 'login.html';
@@ -87,12 +92,11 @@ $(document).ready(function() {
     // Function to load profile data
     function loadProfile() {
         $.ajax({
-            url: 'php/get_profile.php',
-            type: 'POST',
+            url: '/api/get_profile',
+            type: 'GET',
             dataType: 'json',
-            data: {
-                sessionToken: sessionToken,
-                userId: userId
+            headers: {
+                'Authorization': 'Bearer ' + sessionToken
             },
             success: function(response) {
                 if (response.success && response.profile) {

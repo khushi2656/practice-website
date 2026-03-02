@@ -30,14 +30,15 @@ $(document).ready(function() {
         
         // Send AJAX request
         $.ajax({
-            url: 'php/signup.php',
+            url: '/api/signup',
             type: 'POST',
             dataType: 'json',
-            data: {
+            contentType: 'application/json',
+            data: JSON.stringify({
                 username: username,
                 email: email,
                 password: password
-            },
+            }),
             success: function(response) {
                 if (response.success) {
                     showMessage(response.message, 'success');

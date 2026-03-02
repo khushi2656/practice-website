@@ -24,13 +24,14 @@ $(document).ready(function() {
         
         // Send AJAX request
         $.ajax({
-            url: 'php/login.php',
+            url: '/api/login',
             type: 'POST',
             dataType: 'json',
-            data: {
+            contentType: 'application/json',
+            data: JSON.stringify({
                 email: email,
                 password: password
-            },
+            }),
             success: function(response) {
                 if (response.success) {
                     // Store session token and user info in localStorage
